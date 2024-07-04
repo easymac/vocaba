@@ -24,3 +24,13 @@ export const Colors = {
     tabIconSelected: tintColorDark,
   },
 };
+
+export const CardColors = [
+  '#a8d8c2', // Aqua
+  '#d6e1ff', // Periwinkle
+  '#adcee1', // Powder blue
+  '#f3d08b', // Mahattan (Kerry)
+  '#e8e0de', // Ebb
+  '#ffd1d3', // Cosmos
+  '#caa9d9', // Wisteria
+]
