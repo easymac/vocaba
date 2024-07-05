@@ -1,41 +1,39 @@
 import { StyleSheet, View, Text } from 'react-native';
 import { CardColors } from '@/constants/Colors';
 import colorInt from '@/helpers/colorInt';
-import Animated, { useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
+import Animated, { SharedValue, useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import type { Word } from '@/types';
 
-export function Card({ word }: { word: string }) {
+interface CardProps {
+  word: Word;
+  swipeOffset: SharedValue<number> | null;
+  index: number;
+}
+export function Card({ word, swipeOffset, index }: CardProps) {
   const pressed = useSharedValue<boolean>(false);
   const offset = useSharedValue(0);
 
-  const tap = Gesture.Pan()
-    .onBegin(() => {
-      pressed.value = true;
-    })
-    .onChange((event) => {
-      offset.value = event.translationX;
-    })
-    .onFinalize(() => {
-      offset.value = withSpring(0);
-      pressed.value = false;
-    });
+  const animatedStyles = useAnimatedStyle(() => {
+    if (swipeOffset) {
+      offset.value = swipeOffset.value;
+    }
+    return {
+      transform: [
+        { translateX: offset.value },
+        { scale: withTiming(pressed.value ? 1.1 : 1) }
+      ]
+    }
+  });
 
-  const animatedStyles = useAnimatedStyle(() => ({
-    transform: [
-      { translateX: offset.value },
-      { scale: withTiming(pressed.value ? 1.1 : 1) }
-    ]
-  }))
   return (
     <View style={styles.wrapper}>
-      <GestureDetector gesture={tap}>
-        <Animated.View style={[
-          { padding: 4, height: '100%', width: '100%', backgroundColor: CardColors[colorInt(word)] },
-          animatedStyles
-        ]}>
-          <Text>{word}</Text>
-        </Animated.View>
-      </GestureDetector>
+      <Animated.View style={[
+        { padding: 4, height: '100%', width: '100%', backgroundColor: CardColors[colorInt(word.word)] },
+        animatedStyles
+      ]}>
+        <Text>{word.word}</Text>
+      </Animated.View>
     </View>
   );
 }
