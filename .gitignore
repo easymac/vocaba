@@ -10,6 +10,9 @@ npm-debug.*
 *.orig.*
 web-build/
 
+# Ignore the generated dictionary database
+assets/*.db
+
 # macOS
 .DS_Store
 
