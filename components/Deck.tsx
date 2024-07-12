@@ -21,7 +21,7 @@ export function Deck() {
 
 
   return (
-    <View style={{ height: '100%', width: '100%', padding: '5%', backgroundColor: '#111' }}>
+    <View style={{ flex: 1, padding: '5%', backgroundColor: '#111' }}>
       {cards}
     </View>
   )

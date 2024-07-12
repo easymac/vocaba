@@ -25,6 +25,10 @@ export const Colors = {
   },
 };
 
+export const Brand = {
+  kerrygold: '#f3d08b'
+}
+
 export const CardColors = [
   '#a8d8c2', // Aqua
   '#d6e1ff', // Periwinkle

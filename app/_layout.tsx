@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import 'react-native-reanimated';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SQLiteProvider } from 'expo-sqlite';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
 
@@ -33,14 +34,17 @@ export default function RootLayout() {
       databaseName="dictionary.db"
       assetSource={{ assetId: require('../assets/dictionary.db') }}
     >
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-          <Stack>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen name="+not-found" />
-          </Stack>
-        </ThemeProvider>
-      </GestureHandlerRootView>
+      <SafeAreaProvider>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+            <Stack>
+              <Stack.Screen name="index" options={{ headerShown: false }} />
+              <Stack.Screen name="words" options={{ title: 'Words' }} />
+              <Stack.Screen name="+not-found" />
+            </Stack>
+          </ThemeProvider>
+        </GestureHandlerRootView>
+      </SafeAreaProvider>
     </SQLiteProvider>
   );
 }
