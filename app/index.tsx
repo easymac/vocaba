@@ -1,6 +1,7 @@
 import { View, Text, Pressable, StyleSheet } from 'react-native';
 import { Link } from 'expo-router';
 import { Deck } from '@/components/Deck';
+import { HomeScreen } from '@/components/home-screen/HomeScreen';
 
 export default function Index() {
   return (
@@ -11,6 +12,7 @@ export default function Index() {
           <Text>Words</Text>
         </Pressable>
       </Link>
+      <HomeScreen />
     </View>
   )
 }

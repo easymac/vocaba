@@ -1,4 +1,4 @@
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated, {
   useAnimatedStyle,
@@ -8,6 +8,7 @@ import Animated, {
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { Brand } from '@/constants/Colors';
 import { Logo } from './Logo';
+import { HomeSearch } from '../search/HomeSearch';
 
 export function HomeScreen() {
   const offset = useSharedValue(0);
@@ -38,6 +39,14 @@ export function HomeScreen() {
       <GestureDetector gesture={pan}>
         <SafeAreaView style={styles.container}>
           <Logo />
+          <HomeSearch />
+          <View>
+            <Text>Spaced repetition</Text>
+            <Text>For shaping your vocabulary</Text>
+          </View>
+          <View>
+            <Text>Swipe to begin</Text>
+          </View>
         </SafeAreaView>
       </GestureDetector>
     </Animated.View>
