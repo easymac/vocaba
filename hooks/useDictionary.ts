@@ -2,31 +2,51 @@ import { useEffect, useState, useRef } from 'react';
 import { useSQLiteContext } from 'expo-sqlite';
 
 export function useDictionary() {
+  const dbQuery = useRef<AsyncIterableIterator<any>>();
+  const emptyResults = useRef<boolean>(false);
   const db = useSQLiteContext();
-  const [words, setWords] = useState<any[]>([]);
-  const [query, setQuery] = useState<string>('');
+  const [result, setResult] = useState<any[]>([]);
+  const [searchTerm, search] = useState<string>('');
+
 
   useEffect(() => {
-    const handleSearch = async () => {
-      // TODO: SANITIZE QUERY!!!!!!!!!
-      // VERY VERY VERY IMPORTANT!!!!!
-      const result = db.getEachAsync('SELECT * FROM words WHERE word LIKE ?', [`${query}%`]);
-      let i = 0;
-      const results = [];
-      while (i < 10) {
-        const row = await result.next();
-        if (row.done) break;
-        results.push(row.value);
-        i++;
-      }
-      setWords(results);
-    }
+    // TODO: SANITIZE QUERY!!!!!!!!!
+    // VERY VERY VERY IMPORTANT!!!!!
+    dbQuery.current = db.getEachAsync(
+      `
+      SELECT *
+      FROM words
+      WHERE word LIKE ?
+      ORDER BY word;
+      `,
+      [`${searchTerm}%`]
+    );
+    emptyResults.current = true;
+  }, [searchTerm])
 
-    handleSearch();
-  }, [query])
+  const loadNext = async (count: number) => {
+    if (!dbQuery.current) return;
+    const results: any = [];
+    let i = 0;
+    while (i < count) {
+      const row = await dbQuery.current.next();
+      if (row.done) break;
+      results.push(row.value);
+      i++;
+    }
+    setResult((prev) => {
+      if (emptyResults.current) {
+        emptyResults.current = false;
+        return [...results]
+      } else {
+        return [...prev, ...results]
+      }
+    });
+  }
 
   return {
-    words,
-    setQuery
+    result,
+    search,
+    loadNext,
   }
 }

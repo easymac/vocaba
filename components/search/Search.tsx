@@ -6,7 +6,11 @@ import { useDictionary } from '@/hooks/useDictionary';
 export function Search() {
   const inputRef = useRef<TextInput>(null);
   const [ text, setText ] = useState('');
-  const { words, setQuery } = useDictionary();
+  const dictionary = useDictionary();
+
+  useEffect(() => {
+    dictionary.loadNext(3);
+  }, [text])
 
   return (
     <View style={styles.container}>
@@ -17,7 +21,7 @@ export function Search() {
           placeholder="Search for a word..."
           onChangeText={(value) => {
             setText(value)
-            setQuery(value)
+            dictionary.search(value)
           }}
           value={text}
           placeholderTextColor='black'
@@ -30,11 +34,17 @@ export function Search() {
         </Pressable>
       </View>
       <View>
-        {words.map((result) => (
+        {dictionary.result.map((result) => (
           <View key={result.id}>
             <Text style={styles.result}>{result.word}</Text>
           </View>
         ))}
+        <Pressable
+          style={styles.loadMore}
+          onPress={() => dictionary.loadNext(3)}
+        >
+          <Text>Load more...</Text>
+        </Pressable>
       </View>
     </View>
   )
@@ -71,5 +81,10 @@ const styles = StyleSheet.create({
   },
   clearButtonText: {
     color: 'white',
+  },
+  loadMore: {
+    backgroundColor: 'rgba(0, 0, 0, 0.25)',
+    padding: 16,
+    borderRadius: 10,
   }
 });
