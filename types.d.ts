@@ -1,5 +1,6 @@
 export type Meaning = {
   definitions: string[];
+  tags?: string[];
 }
 
 export type Word = {

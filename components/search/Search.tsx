@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { View, StyleSheet, TextInput, Text, Pressable } from 'react-native';
-import { useSQLiteContext } from 'expo-sqlite';
+import { SearchResult } from './SearchResult';
 import { useDictionary } from '@/hooks/useDictionary';
 
 export function Search() {
@@ -35,9 +35,7 @@ export function Search() {
       </View>
       <View>
         {dictionary.result.map((result) => (
-          <View key={result.id}>
-            <Text style={styles.result}>{result.word}</Text>
-          </View>
+          <SearchResult key={result.id} word={result} />
         ))}
         <Pressable
           style={styles.loadMore}

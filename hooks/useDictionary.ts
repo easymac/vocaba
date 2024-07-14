@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { useSQLiteContext } from 'expo-sqlite';
+import { parseDictionaryEntry } from '@/helpers/parseDictionaryEntry';
 
 export function useDictionary() {
   const dbQuery = useRef<AsyncIterableIterator<any>>();
@@ -31,7 +32,8 @@ export function useDictionary() {
     while (i < count) {
       const row = await dbQuery.current.next();
       if (row.done) break;
-      results.push(row.value);
+      const parsedEntry = parseDictionaryEntry(row.value);
+      results.push(parsedEntry);
       i++;
     }
     setResult((prev) => {
