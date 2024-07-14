@@ -7,6 +7,7 @@ import 'react-native-reanimated';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SQLiteProvider } from 'expo-sqlite';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { Brand } from '@/constants/Colors';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
 
@@ -39,7 +40,13 @@ export default function RootLayout() {
           <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
             <Stack>
               <Stack.Screen name="index" options={{ headerShown: false }} />
-              <Stack.Screen name="words" options={{ title: 'Words' }} />
+              <Stack.Screen name="words" options={{
+                title: 'Words',
+                headerStyle: {
+                  backgroundColor: Brand.kerrygold
+                },
+                headerTintColor: 'black',
+              }} />
               <Stack.Screen name="+not-found" />
             </Stack>
           </ThemeProvider>
