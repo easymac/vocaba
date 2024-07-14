@@ -1,29 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { View, StyleSheet, TextInput, Text, Pressable } from 'react-native';
 import { useSQLiteContext } from 'expo-sqlite';
+import { useDictionary } from '@/hooks/useDictionary';
 
 export function Search() {
   const inputRef = useRef<TextInput>(null);
-  const db = useSQLiteContext();
-  const [text, setText] = useState('');
-  const [results, setResults] = useState<any[]>([]);
-
-  useEffect(() => {
-    const handleSearch = async () => {
-      const result = db.getEachAsync('SELECT * FROM words WHERE word LIKE ?', [`${text}%`]);
-      let i = 0;
-      const results = [];
-      while (i < 10) {
-        const row = await result.next();
-        if (row.done) break;
-        results.push(row.value);
-        i++;
-      }
-      setResults(results);
-    }
-
-    handleSearch();
-  }, [text])
+  const [ text, setText ] = useState('');
+  const { words, setQuery } = useDictionary();
 
   return (
     <View style={styles.container}>
@@ -32,7 +15,10 @@ export function Search() {
           ref={inputRef}
           style={styles.input}
           placeholder="Search for a word..."
-          onChangeText={setText}
+          onChangeText={(value) => {
+            setText(value)
+            setQuery(value)
+          }}
           value={text}
           placeholderTextColor='black'
         />
@@ -44,7 +30,7 @@ export function Search() {
         </Pressable>
       </View>
       <View>
-        {results.map((result) => (
+        {words.map((result) => (
           <View key={result.id}>
             <Text style={styles.result}>{result.word}</Text>
           </View>
@@ -86,4 +72,4 @@ const styles = StyleSheet.create({
   clearButtonText: {
     color: 'white',
   }
-})
+});
