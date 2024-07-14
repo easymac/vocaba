@@ -39,7 +39,10 @@ export default function RootLayout() {
         <GestureHandlerRootView style={{ flex: 1 }}>
           <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
             <Stack>
-              <Stack.Screen name="index" options={{ headerShown: false }} />
+              <Stack.Screen name="index" options={{
+                headerShown: false,
+                title: 'Word deck',
+              }} />
               <Stack.Screen name="words" options={{
                 title: 'Words',
                 headerStyle: {
