@@ -8,5 +8,6 @@ export type Word = {
   lexicalCategory: string;
   ipa: string | null;
   meanings: Meaning[];
-  id: string;
+  id: number;
+  isInDeck: boolean;
 }

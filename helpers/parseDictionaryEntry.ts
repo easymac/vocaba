@@ -5,11 +5,12 @@ import type { Word, Meaning } from '@/types';
  * (including parsing the serialized meanings field)
  */
 type DictionaryEntry = {
-  id: string;
+  id: number;
   ipa: string | null;
   lexical_category: string;
   meanings: string;
   word: string;
+  in_deck: boolean;
 }
 export function parseDictionaryEntry(entry: DictionaryEntry): Word {
   return {
@@ -17,7 +18,8 @@ export function parseDictionaryEntry(entry: DictionaryEntry): Word {
     lexicalCategory: entry.lexical_category,
     ipa: entry.ipa,
     meanings: parseMeanings(entry.meanings),
-    id: entry.id
+    id: entry.id,
+    isInDeck: entry.in_deck,
   }
 }
 

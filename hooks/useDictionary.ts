@@ -12,10 +12,13 @@ export function useDictionary() {
   const search = useCallback((term: string) => {
     dbQuery.current = db.getEachAsync(
       `
-      SELECT *
+      SELECT words.*,
+        EXISTS (SELECT 1
+          FROM user_deck
+          WHERE user_deck.word_id = words.id) AS in_deck
       FROM words
-      WHERE word LIKE ?
-      ORDER BY word;
+      WHERE words.word LIKE ?
+      ORDER BY words.word
       `,
       [`${term}%`]
     );

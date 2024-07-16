@@ -1,7 +1,9 @@
 import { View, Text, Pressable, StyleSheet } from 'react-native';
 import type { Word } from '@/types';
+import { useWordInDeck } from '@/hooks/useWordInDeck';
 
 export function SearchResult({ word }: { word: Word }) {
+  const test = useWordInDeck(word);
   return (
     <Pressable onPress={() => {}} style={styles.wrapper}>
       <View style={styles.main}>
@@ -11,6 +13,15 @@ export function SearchResult({ word }: { word: Word }) {
         </View>
         {word.meanings[0] && word.meanings[0].definitions && (
           <Text style={styles.definition}>{word.meanings[0].definitions[0]}</Text>
+        )}
+        {test.inDeck ? (
+          <Pressable onPress={test.removeWordFromUserDeck}>
+            <Text>Remove from deck</Text>
+          </Pressable>
+        ) : (
+          <Pressable onPress={test.addWordToUserDeck}>
+            <Text>Add to deck</Text>
+          </Pressable>
         )}
       </View>
     </Pressable>
