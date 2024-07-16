@@ -1,16 +1,10 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { View, StyleSheet, TextInput, Text, Pressable } from 'react-native';
-import { SearchResult } from './SearchResult';
-import { useDictionary } from '@/hooks/useDictionary';
+import { SearchResultsList } from './SearchResultsList';
 
 export function Search() {
   const inputRef = useRef<TextInput>(null);
   const [ text, setText ] = useState('');
-  const dictionary = useDictionary();
-
-  useEffect(() => {
-    dictionary.loadNext(3);
-  }, [text])
 
   return (
     <View style={styles.container}>
@@ -19,10 +13,7 @@ export function Search() {
           ref={inputRef}
           style={styles.input}
           placeholder="Search for a word..."
-          onChangeText={(value) => {
-            setText(value)
-            dictionary.search(value)
-          }}
+          onChangeText={setText}
           value={text}
           placeholderTextColor='black'
         />
@@ -34,15 +25,7 @@ export function Search() {
         </Pressable>
       </View>
       <View>
-        {dictionary.result.map((result) => (
-          <SearchResult key={result.id} word={result} />
-        ))}
-        <Pressable
-          style={styles.loadMore}
-          onPress={() => dictionary.loadNext(3)}
-        >
-          <Text>Load more...</Text>
-        </Pressable>
+        <SearchResultsList search={text} />
       </View>
     </View>
   )

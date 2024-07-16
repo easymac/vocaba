@@ -1,18 +1,15 @@
-import { useEffect, useState, useRef } from 'react';
+import { useCallback, useEffect, useState, useRef } from 'react';
 import { useSQLiteContext } from 'expo-sqlite';
 import { parseDictionaryEntry } from '@/helpers/parseDictionaryEntry';
 
 export function useDictionary() {
   const dbQuery = useRef<AsyncIterableIterator<any>>();
-  const emptyResults = useRef<boolean>(false);
-  const db = useSQLiteContext();
+  const shouldEmptyResultsList = useRef<boolean>(false);
   const [result, setResult] = useState<any[]>([]);
-  const [searchTerm, search] = useState<string>('');
 
+  const db = useSQLiteContext();
 
-  useEffect(() => {
-    // TODO: SANITIZE QUERY!!!!!!!!!
-    // VERY VERY VERY IMPORTANT!!!!!
+  const search = useCallback((term: string) => {
     dbQuery.current = db.getEachAsync(
       `
       SELECT *
@@ -20,14 +17,15 @@ export function useDictionary() {
       WHERE word LIKE ?
       ORDER BY word;
       `,
-      [`${searchTerm}%`]
+      [`${term}%`]
     );
-    emptyResults.current = true;
-  }, [searchTerm])
+    shouldEmptyResultsList.current = true;
+  }, [db]);
 
-  const loadNext = async (count: number) => {
+  const loadNext = useCallback(async (count: number) => {
     if (!dbQuery.current) return;
-    const results: any = [];
+
+    const results: any[] = [];
     let i = 0;
     while (i < count) {
       const row = await dbQuery.current.next();
@@ -36,19 +34,20 @@ export function useDictionary() {
       results.push(parsedEntry);
       i++;
     }
+
     setResult((prev) => {
-      if (emptyResults.current) {
-        emptyResults.current = false;
-        return [...results]
+      if (shouldEmptyResultsList.current) {
+        shouldEmptyResultsList.current = false;
+        return results;
       } else {
-        return [...prev, ...results]
+        return [...prev, ...results];
       }
     });
-  }
+  }, []);
 
   return {
     result,
     search,
-    loadNext,
+    loadNext
   }
 }
