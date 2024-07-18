@@ -1,28 +1,36 @@
 import { View, Text, Pressable, StyleSheet } from 'react-native';
+import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import type { Word } from '@/types';
 import { useWordInDeck } from '@/hooks/useWordInDeck';
 
 export function SearchResult({ word }: { word: Word }) {
-  const test = useWordInDeck(word);
+  const deck = useWordInDeck(word);
+
+  const handleCheckboxPress = (isChecked: boolean) => {
+    if (isChecked) {
+      deck.addWordToUserDeck();
+    } else {
+      deck.removeWordFromUserDeck();
+    }
+  }
   return (
     <Pressable onPress={() => {}} style={styles.wrapper}>
       <View style={styles.main}>
-        <View style={styles.headingRow}>
-          <Text style={styles.word}>{word.word}</Text>
-          <Text style={styles.category}>{word.lexicalCategory}</Text>
-        </View>
+        <Text style={styles.word}>{word.word}</Text>
+        <Text style={styles.category}>{word.lexicalCategory}</Text>
         {word.meanings[0] && word.meanings[0].definitions && (
           <Text style={styles.definition}>{word.meanings[0].definitions[0]}</Text>
         )}
-        {test.inDeck ? (
-          <Pressable onPress={test.removeWordFromUserDeck}>
-            <Text>Remove from deck</Text>
-          </Pressable>
-        ) : (
-          <Pressable onPress={test.addWordToUserDeck}>
-            <Text>Add to deck</Text>
-          </Pressable>
-        )}
+      </View>
+      
+      <View style={styles.checkmark}>
+        <BouncyCheckbox
+          isChecked={deck.inDeck}
+          onPress={handleCheckboxPress}
+          fillColor="black"
+          iconStyle={{ borderColor: 'black' }}
+          innerIconStyle={{ borderWidth: 2 }}
+        />
       </View>
     </Pressable>
   )
@@ -34,8 +42,11 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     borderRadius: 10,
     padding: 16,
+    display: 'flex',
+    flexDirection: 'row'
   },
   main: {
+    flex: 1,
   },
   word: {
     color: 'black',
@@ -46,14 +57,17 @@ const styles = StyleSheet.create({
   category: {
     color: 'black',
     fontSize: 11,
-    padding: 10,
+    paddingTop: 5,
+    paddingBottom: 10,
     textTransform: 'uppercase',
   },
   definition: {
     color: 'black'
   },
-  headingRow: {
+  checkmark: {
     display: 'flex',
-    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingLeft: 10,
   }
 })
