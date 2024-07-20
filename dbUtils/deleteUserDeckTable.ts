@@ -1,7 +1,7 @@
-import * as SQLite from 'expo-sqlite';
+import sqlite from '@/db';
 
 export async function deleteUserDeckTable() {
-  const db = await SQLite.openDatabaseAsync('dictionary.db');
+  const db = await sqlite;
   await db.execAsync(`
     DROP TABLE IF EXISTS user_deck;
   `)

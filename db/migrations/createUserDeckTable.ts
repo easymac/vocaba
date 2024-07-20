@@ -1,7 +1,7 @@
-import * as SQLite from 'expo-sqlite';
+import sqlite from '@/db';
 
 async function createUserDeckTable() {
-  const db = await SQLite.openDatabaseAsync('dictionary.db');
+  const db = await sqlite;
   await db.execAsync(`
     CREATE TABLE IF NOT EXISTS user_deck (
       id INTEGER PRIMARY KEY AUTOINCREMENT,

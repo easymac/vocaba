@@ -12,7 +12,7 @@ import { Brand } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 
 // Database utility scripts, such as migrations and table creation.
-import '@/dbUtils/createUserDeckTable';
+import '@/db/migrations/createUserDeckTable';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();

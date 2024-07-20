@@ -1,10 +1,15 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { Card } from '@/components/Card';
-import DevWordBank from '@/constants/DevWordBank';
+import { useWordDeck } from '@/hooks/useWordDeck';
 
 export function Deck() {
-  const [words, setWords] = useState(DevWordBank.slice(0, 10));
+  const allWords = useWordDeck();
+  const [words, setWords] = useState(allWords);
+
+  useEffect(() => {
+    setWords(allWords);
+  }, [allWords])
 
   const handleGesture = (direction: string) => {
     setWords(words.slice(1));
@@ -18,7 +23,6 @@ export function Deck() {
       index={index}
     />
   )).reverse();
-
 
   return (
     <View style={{ flex: 1, padding: '5%', backgroundColor: '#111' }}>
