@@ -6,13 +6,13 @@ import { HomeScreen } from '@/components/home-screen/HomeScreen';
 
 export default function Index() {
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#d8dff3', gap: 15 }}>
       <Deck />
-      <Link href="/words" style={styles.wordsButton}>
-        <Pressable>
-          <Text>Words</Text>
-        </Pressable>
-      </Link>
+      <View style={styles.wordsButton}>
+        <Link href="/words" style={styles.wordsLink}>
+          <Text style={styles.wordsButtonText}>Words</Text>
+        </Link>
+      </View>
       <HomeScreen />
     </SafeAreaView>
   )
@@ -20,9 +20,23 @@ export default function Index() {
 
 const styles = StyleSheet.create({
   wordsButton: {
-    backgroundColor: 'salmon',
+    backgroundColor: '#1c1c1e',
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20,
+    width: 'auto',
+    margin: 'auto',
+    borderRadius: 9999,
+  },
+  wordsLink: {
+    padding: 30,
+    paddingLeft: 40,
+    paddingRight: 40,
+  },
+  wordsButtonText: {
+    color: 'white',
+    textTransform: 'uppercase',
+    letterSpacing: -1,
+    textAlign: 'center',
+    fontWeight: 'bold',
   }
 })
