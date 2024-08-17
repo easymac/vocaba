@@ -1,11 +1,12 @@
 import { View, Text, Pressable, StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Link } from 'expo-router';
 import { Deck } from '@/components/Deck';
 import { HomeScreen } from '@/components/home-screen/HomeScreen';
 
 export default function Index() {
   return (
-    <View style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1 }}>
       <Deck />
       <Link href="/words" style={styles.wordsButton}>
         <Pressable>
@@ -13,7 +14,7 @@ export default function Index() {
         </Pressable>
       </Link>
       <HomeScreen />
-    </View>
+    </SafeAreaView>
   )
 }
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
-import { Card } from '@/components/Card';
+import { Card } from '@/components/card/Card';
 import { useWordDeck } from '@/hooks/useWordDeck';
 
 export function Deck() {
@@ -25,7 +25,7 @@ export function Deck() {
   )).reverse();
 
   return (
-    <View style={{ flex: 1, padding: '5%', backgroundColor: '#111' }}>
+    <View style={{ flex: 1 }}>
       {cards}
     </View>
   )

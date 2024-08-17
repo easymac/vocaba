@@ -6,7 +6,7 @@ export function useWordInDeck(word: Word) {
   const [inDeck, setInDeck] = useState(word.isInDeck);
   
   if (inDeck) {
-    console.log(word);
+    // console.log(word);
   }
 
   const addWordToUserDeck = async () => {
