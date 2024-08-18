@@ -3,14 +3,16 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Link } from 'expo-router';
 import { Deck } from '@/components/Deck';
 import { HomeScreen } from '@/components/home-screen/HomeScreen';
+import { useWordDeck } from '@/hooks/useWordDeck';
 
 export default function Index() {
+  const words = useWordDeck();
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#d8dff3', gap: 15 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#d8dff3', gap: 12 }}>
       <Deck />
       <View style={styles.wordsButton}>
         <Link href="/words" style={styles.wordsLink}>
-          <Text style={styles.wordsButtonText}>Words</Text>
+          <Text style={styles.wordsButtonText}>{words.length} words</Text>
         </Link>
       </View>
       <HomeScreen />

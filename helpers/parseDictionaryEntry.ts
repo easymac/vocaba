@@ -4,7 +4,7 @@ import type { Word, Meaning } from '@/types';
  * Converts the dictionary database output into a more usable format
  * (including parsing the serialized meanings field)
  */
-type DictionaryEntry = {
+export type DictionaryEntry = {
   id: number;
   ipa: string | null;
   lexical_category: string;

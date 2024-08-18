@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSQLiteContext } from "expo-sqlite";
 import { useDatabaseChangeEvent } from "./useDatabaseChangeEvent";
-import { parseDictionaryEntry } from '@/helpers/parseDictionaryEntry';
+import { DictionaryEntry, parseDictionaryEntry } from '@/helpers/parseDictionaryEntry';
 
 export function useWordDeck() {
   const db = useSQLiteContext();
@@ -17,10 +17,10 @@ export function useWordDeck() {
       `);
       let i = 0;
       const results: any[] = [];
-      while (i < 10) {
+      while (true) {
         const row = await query.next();
         if (row.done) break;
-        const parsedEntry = parseDictionaryEntry(row.value);
+        const parsedEntry = parseDictionaryEntry(row.value as DictionaryEntry);
         results.push(parsedEntry);
         i++;
       }
