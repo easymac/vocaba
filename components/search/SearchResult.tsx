@@ -2,6 +2,7 @@ import { View, Text, Pressable, StyleSheet } from 'react-native';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import type { Word } from '@/types';
 import { useWordInDeck } from '@/hooks/useWordInDeck';
+import { Brand } from '@/constants/Colors';
 
 export function SearchResult({ word }: { word: Word }) {
   const deck = useWordInDeck(word);
@@ -38,12 +39,12 @@ export function SearchResult({ word }: { word: Word }) {
 
 const styles = StyleSheet.create({
   wrapper: {
-    borderColor: 'black',
-    borderWidth: 3,
     borderRadius: 10,
     padding: 16,
     display: 'flex',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    backgroundColor: Brand.kerrygold,
+    marginBottom: 3,
   },
   main: {
     flex: 1,

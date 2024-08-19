@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { View, StyleSheet, TextInput, Text, Pressable } from 'react-native';
 import { SearchResultsList } from './SearchResultsList';
+import { Brand } from '@/constants/Colors';
 
 export function Search() {
   const inputRef = useRef<TextInput>(null);
@@ -8,24 +9,26 @@ export function Search() {
 
   return (
     <View style={styles.container}>
-      <View>
-        <TextInput
-          ref={inputRef}
-          style={styles.input}
-          placeholder="Search for a word..."
-          onChangeText={setText}
-          value={text}
-          placeholderTextColor='black'
-        />
-        <Pressable
-          style={styles.clearButton}
-          onPress={() => inputRef.current?.clear()}
-        >
-          <Text style={styles.clearButtonText}>X</Text>
-        </Pressable>
-      </View>
-      <View>
-        <SearchResultsList search={text} />
+      <View style={styles.inner}>
+        <View>
+          <TextInput
+            ref={inputRef}
+            style={styles.input}
+            placeholder="Search for a word..."
+            onChangeText={setText}
+            value={text}
+            placeholderTextColor='black'
+          />
+          <Pressable
+            style={styles.clearButton}
+            onPress={() => inputRef.current?.clear()}
+          >
+            <Text style={styles.clearButtonText}>X</Text>
+          </Pressable>
+        </View>
+        <View>
+          <SearchResultsList search={text} />
+        </View>
       </View>
     </View>
   )
@@ -34,6 +37,14 @@ export function Search() {
 const styles = StyleSheet.create({
   container: {
     padding: 16,
+  },
+  inner: {
+    backgroundColor: 'black',
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
+    overflow: 'hidden',
   },
   input: {
     borderColor: 'black',
@@ -44,6 +55,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 24,
     fontWeight: 'bold',
+    backgroundColor: Brand.kerrygold,
   },
   result: {
     color: 'white',
