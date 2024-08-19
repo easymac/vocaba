@@ -1,30 +1,15 @@
-import { useEffect, useState } from "react";
-import { useSQLiteContext } from "expo-sqlite";
-import { useDatabaseChangeEvent } from "./useDatabaseChangeEvent";
-import { DictionaryEntry, parseDictionaryEntry } from '@/helpers/parseDictionaryEntry';
+import { useEffect, useState } from 'react';
+import { useDatabaseChangeEvent } from './useDatabaseChangeEvent';
+import { getAllWordsInDeck } from '@/dbUtils/db';
 
 export function useWordDeck() {
-  const db = useSQLiteContext();
   const change = useDatabaseChangeEvent();
   const [words, setWords] = useState<any[]>([]);
 
   useEffect(() => {
     const fetchWords = async () => {
-      const query = db.getEachAsync(`
-        SELECT words.*
-        FROM words
-        INNER JOIN user_deck ON words.id = user_deck.word_id
-      `);
-      let i = 0;
-      const results: any[] = [];
-      while (true) {
-        const row = await query.next();
-        if (row.done) break;
-        const parsedEntry = parseDictionaryEntry(row.value as DictionaryEntry);
-        results.push(parsedEntry);
-        i++;
-      }
-      setWords(results);
+      const result = await getAllWordsInDeck();
+      setWords(result);
     }
     fetchWords();
   }, [change])
