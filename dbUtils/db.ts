@@ -25,3 +25,12 @@ export async function getAllWordsInDeck() {
   `);
   return result;
 }
+
+export async function getEachWordInDeck() {
+  const db = await sqlite;
+  return db.getEachAsync(`
+    SELECT words.*
+    FROM words
+    INNER JOIN user_deck ON words.id = user_deck.word_id
+  `);
+}

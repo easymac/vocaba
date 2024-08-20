@@ -2,10 +2,18 @@ import { useRef, useState } from 'react';
 import { View, StyleSheet, TextInput, Text, Pressable } from 'react-native';
 import { SearchResultsList } from './SearchResultsList';
 import { Brand } from '@/constants/Colors';
+import { CurrentDeckList } from './CurrentDeckList';
 
 export function Search() {
   const inputRef = useRef<TextInput>(null);
   const [ text, setText ] = useState('');
+
+  let list;
+  if (text.length) {
+    list = <SearchResultsList search={text} />;
+  } else {
+    list = <CurrentDeckList />;
+  }
 
   return (
     <View style={styles.container}>
@@ -27,7 +35,7 @@ export function Search() {
           </Pressable>
         </View>
         <View>
-          <SearchResultsList search={text} />
+          {list}
         </View>
       </View>
     </View>
