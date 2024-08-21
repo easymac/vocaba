@@ -21,7 +21,6 @@ export function useWordDeck() {
 export function useEachWordDeck() {
   const queryRef = useRef<AsyncIterableIterator<any>>();
   const [words, setWords] = useState<any[]>([]);
-  console.log(words)
 
   useEffect(() => {
     const doQuery = async () => {
