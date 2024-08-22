@@ -24,6 +24,5 @@ export function parseDictionaryEntry(entry: DictionaryEntry): Word {
 }
 
 function parseMeanings(meanings: string): Meaning[] {
-  const parsedMeanings = JSON.parse(meanings);
   return JSON.parse(meanings);
 }
