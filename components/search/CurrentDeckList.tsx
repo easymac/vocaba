@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import { View, StyleSheet, FlatList } from 'react-native';
 import { SearchResult } from './SearchResult';
-import { useEachWordDeck } from '@/hooks/useWordDeck';
+import { useWordDeckNew } from '@/hooks/useWordDeck';
 
 export function CurrentDeckList() {
-  const { words, loadNext } = useEachWordDeck();
+  const { words, loadNext } = useWordDeckNew();
 
   useEffect(() => {
     loadNext(10);
@@ -17,7 +17,6 @@ export function CurrentDeckList() {
           data={words}
           extraData={words}
           renderItem={({ item }) => <SearchResult word={item} />}
-          keyExtractor={(item) => item.id}
           onEndReached={() => loadNext(10)}
           onEndReachedThreshold={0.1}
         />

@@ -1,7 +1,8 @@
 import sqlite from '@/db';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDatabaseChangeEvent } from './useDatabaseChangeEvent';
-import { getAllWordsInDeck, getEachWordInDeck } from '@/dbUtils/db';
+import { getAllWordsInDeck, getCountOfWordsInDeck, getPagedWordsInDeck } from '@/dbUtils/db';
+import type { Word } from '@/types';
 
 export function useWordDeck() {
   const change = useDatabaseChangeEvent();
@@ -18,41 +19,31 @@ export function useWordDeck() {
   return words;
 }
 
-export function useEachWordDeck() {
-  const queryRef = useRef<AsyncIterableIterator<any>>();
-  const [words, setWords] = useState<any[]>([]);
+export function useWordDeckNew() {
+  const change = useDatabaseChangeEvent();
+  const [count, setCount] = useState<number | null>(null);
+  const [words, setWords] = useState<Word[]>([]);
+  const lastKey = useRef<string | null>(null);
 
   useEffect(() => {
-    const doQuery = async () => {
-      const db = await sqlite;
-      queryRef.current = db.getEachAsync(`
-        SELECT words.*
-        FROM words
-        INNER JOIN user_deck ON words.id = user_deck.word_id
-      `);
+    const getCount = async () => {
+      const result = await getCountOfWordsInDeck();
+      setCount(result);
     }
-    doQuery();
-  }, [])
+    getCount();
+  }, [change]);
 
-  const loadNext = useCallback(async (count: number) => {
-    await sqlite;
-    // await new Promise((resolve) => setTimeout(resolve, 1000));
-    if (!queryRef.current) return;
-
-    const results: any[] = [];
-    let i = 0;
-    while (i < count) {
-      const row = await queryRef.current.next();
-      if (row.done) break;
-      results.push(row.value);
-      i++;
+  const loadNext = async (count: number) => {
+    const result = await getPagedWordsInDeck(lastKey.current, count);
+    if (result.length > 0) {
+      lastKey.current = result[result.length - 1].word;
     }
-
-    setWords((prev) => [...prev, ...results]);
-  }, []);
+    setWords((prev) => [...prev, ...result]);
+  }
 
   return {
     words,
-    loadNext
+    loadNext,
+    count
   }
 }
