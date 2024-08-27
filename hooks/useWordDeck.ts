@@ -47,3 +47,29 @@ export function useWordDeckNew() {
     count
   }
 }
+
+
+export function useWordDeckNewer() {
+  const [cards, setCards] = useState<Word[]>([]);
+
+  const deleteWord = async (wordId: number) => {
+
+  }
+
+  const undo = async () => {
+    // undo any previous action
+  }
+
+  const markWordUsed = async (wordId: number) => {
+
+  }
+
+  const markWordUnused = async (wordId: number) => {
+
+  }
+
+  return {
+    deleteWord,
+    undo
+  }
+}
